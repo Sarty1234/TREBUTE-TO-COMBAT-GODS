@@ -22,7 +22,7 @@ public class DamageZone : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time > lastDamageTime) return;
+        if (Time.time < lastDamageTime) return;
 
 
         colliders = Physics.OverlapBox(transform.position, HalfOfBoxExtensions, Quaternion.identity);
@@ -30,9 +30,9 @@ public class DamageZone : MonoBehaviour
 
         foreach (Collider collider in colliders)
         {
-            if (TryGetComponent<IHPScript>(out IHPScript hp))
+            if (collider.TryGetComponent<IHPScript>(out IHPScript hp))
             {
-                hp.TakeDamage(damage, this.gameObject, this.gameObject);
+                hp.TakeDamage(damage);
             }
         }
     }

@@ -13,7 +13,7 @@ public class InstantDeathZone : MonoBehaviour
     {
         if (other.TryGetComponent<IHPScript>(out IHPScript hp))
         {
-            hp.TakeDamage(math.INFINITY, this.gameObject, this.gameObject);
+            hp.TakeDamage(math.INFINITY);
         }
     }
 }
