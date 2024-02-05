@@ -611,6 +611,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 550678312}
     - target: {fileID: 6900682849503222396, guid: a2b7800446b096f469fb7e1d7f5ba136, type: 3}
+      propertyPath: NetworkConfig.EnableSceneManagement
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6900682849503222396, guid: a2b7800446b096f469fb7e1d7f5ba136, type: 3}
       propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.size
       value: 1
       objectReference: {fileID: 0}

@@ -23,6 +23,7 @@ public class DamageZone : MonoBehaviour
     private void Update()
     {
         if (Time.time < lastDamageTime) return;
+        lastDamageTime = Time.time + timeBetweenDamage;
 
 
         colliders = Physics.OverlapBox(transform.position, HalfOfBoxExtensions, Quaternion.identity);
