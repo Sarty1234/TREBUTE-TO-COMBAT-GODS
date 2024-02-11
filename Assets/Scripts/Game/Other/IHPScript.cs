@@ -6,8 +6,7 @@ using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using Player;
-
-
+using Unity.Netcode.Components;
 
 namespace Player
 {
@@ -63,9 +62,30 @@ namespace Player
         }
 
 
-        private void ResetHP()
+        public void ResetHP()
         {
             if (!IsOwner) return;
+
+
+            //Присвоює дані про хп
+            CurentHP.Value = ActualMaxHP;
+            CurentMaxHP.Value = ActualMaxHP;
+
+
+            damageMultipliers = new damageMuliplayerClass[0];
+            maxHPAdditions = new maxHPAdditionClass[0];
+        }
+
+
+        [ClientRpc]
+        public void ResetHPClientRPC(ulong playerID, ClientRpcParams clientRpcParams = default)
+        {
+            Debug.Log($"Trying to reset player hp {playerID}; curent id - {GetComponent<NetworkTransform>().OwnerClientId}; Is owner - {IsOwner}");
+            if (!IsOwner) return;
+            
+
+
+            Debug.Log($"Reseting player hp {playerID}");
 
 
             //Присвоює дані про хп
@@ -82,6 +102,7 @@ namespace Player
         {
             CalculateMaxHP();
             setHPText();
+            CheckIfDead();
         }
 
 
@@ -96,7 +117,10 @@ namespace Player
 
 
             //вилучаємо множники шкоди чий час пройшов
-            damageMultipliers = damageMultipliers.Where(obj => obj.time >= Time.time).ToArray();
+            if (damageMultipliers.Length > 0)
+            {
+                damageMultipliers = damageMultipliers.Where(obj => obj.time >= Time.time).ToArray();
+            }
 
 
             //обраховуємо нанесену шкоду
@@ -113,6 +137,13 @@ namespace Player
             CurentHP.Value -= _damage;
 
 
+            //дивимося чи живий обєкт
+            CheckIfDead();
+        }
+
+
+        public void CheckIfDead()
+        {
             //дивимося чи живий обєкт
             if (CurentHP.Value <= 0)
             {

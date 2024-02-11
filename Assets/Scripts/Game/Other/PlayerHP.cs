@@ -13,7 +13,10 @@ namespace Assets.Scripts.Game.Other
     {
         public override void Dead()
         {
+            if (!IsOwner) return;
             base.Dead();
+            GetComponent<PlayerData>().Dead();
+            transform.position = new Vector3 (0, -100, 0);
         }
     }
 }
