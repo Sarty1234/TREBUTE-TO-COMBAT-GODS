@@ -13,11 +13,7 @@ namespace Assets.Scripts.Game.Other
     {
         public override void Dead()
         {
-            if (!IsOwner) return;
             base.Dead();
-
-
-            GetComponent<PlayerData>().Dead();
         }
     }
 }
