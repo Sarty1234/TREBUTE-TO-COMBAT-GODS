@@ -6,8 +6,7 @@ using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using Player;
-
-
+using Unity.Netcode.Components;
 
 namespace Player
 {
@@ -63,9 +62,30 @@ namespace Player
         }
 
 
-        private void ResetHP()
+        public void ResetHP()
         {
             if (!IsOwner) return;
+
+            //////////////////////////////////////////////
+            ResetHPClientRPC(GetComponent<NetworkTransform>().OwnerClientId);
+
+
+
+            /*//Присвоює дані про хп
+            CurentHP.Value = ActualMaxHP;
+            CurentMaxHP.Value = ActualMaxHP;
+
+
+            damageMultipliers = new damageMuliplayerClass[0];
+            maxHPAdditions = new maxHPAdditionClass[0];*/
+        }
+
+
+        [ClientRpc()]
+        public void ResetHPClientRPC(ulong playerID)
+        {
+            if (!IsOwner) return;
+            if (GetComponent<NetworkTransform>().OwnerClientId != playerID) return;
 
 
             //Присвоює дані про хп
